@@ -27,7 +27,7 @@ namespace MasterMind.Tests
         {
         var code = new []{Colours.Red, Colours.Blue, Colours.Green, Colours.Yellow};
         var guess = new []{Colours.Red, Colours.Orange, Colours.Yellow, Colours.Orange};
-        var newGame = new Game(code);
+        var newGame = new Game{Code = code};
         var actualResponse = newGame.Check(guess);
         var expectedResponse = new []{ResponseColours.Black, ResponseColours.White};
         Assert.Equal(expectedResponse, actualResponse);

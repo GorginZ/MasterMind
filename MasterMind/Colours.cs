@@ -8,6 +8,9 @@ namespace MasterMind
     Orange,
 
     Purple,
-    Yellow
+    Yellow,
+
+    MinValue = Red,
+    MaxValue = Yellow
   }
 }

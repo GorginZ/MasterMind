@@ -2,12 +2,16 @@
 
 namespace MasterMind
 {
-    class Program
+  class Program
+  {
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-            var newGame = new Game(new []{Colours.Blue, Colours.Blue, Colours.Blue, Colours.Blue});
+      Console.WriteLine("Hello World!");
+      var newGame = new Game();
+      var guess = new[] { Colours.Blue, Colours.Purple, Colours.Purple, Colours.Purple };
+
+      var response = newGame.Check(guess);
+    
         }
-    }
+  }
 }
