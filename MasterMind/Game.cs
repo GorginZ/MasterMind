@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,7 +10,9 @@ namespace MasterMind
     public Colours[] Code { get; set; }
 
     public IUserInput UserInput { get; set; }
-    
+
+    public int GuessCount { get; set; }
+
 
     public Game() : this(Game.RandomCodeFactory, new ConsoleUserInput())
     { }
@@ -38,10 +41,45 @@ namespace MasterMind
       return code;
     }
 
-  public Colours[] TakeGuess(string guess)
-  {
-    
-  }
+    public Colours[] TakeGuess(string guess)
+    {
+      // var consoleUserInput = new ConsoleUserInput();
+      var isValidGuess = TryParseGuess(guess, out Colours[] validGuess);
+      return validGuess;
+
+    }
+
+
+
+
+    //out params. 
+
+    public bool TryParseGuess(string guess, out Colours[] validGuess)
+    {
+      validGuess = null;
+      var guessArr = guess.Split(", ");
+      if (guessArr.Length > 4 || guessArr.Length < 4)
+      {
+        return false;
+      }
+      var parsedColours = new Colours[4];
+      for (int i = 0; i < guessArr.Length; i++)
+      {
+        if (Enum.TryParse(guessArr[i], out Colours colour))
+        {
+          parsedColours[i] = colour;
+          validGuess = parsedColours;
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+
+      }
+      return false;
+
+    }
 
 
     public ResponseColours[] Check(Colours[] guess)
@@ -64,7 +102,7 @@ namespace MasterMind
     }
   }
 }
-  // guess: red, red, red, red
+// guess: red, red, red, red
 
 // code: blue, green, red, blue
 

@@ -6,12 +6,17 @@ namespace MasterMind
   {
     static void Main(string[] args)
     {
-      Console.WriteLine("Hello World!");
+      Console.WriteLine("Mastermind");
       var newGame = new Game();
-      var guess = new[] { Colours.Blue, Colours.Purple, Colours.Purple, Colours.Purple };
-
-      var response = newGame.Check(guess);
-    
-        }
+          while (newGame.GuessCount < 60)
+          {
+               var guess = Console.ReadLine();
+      var validGuess = newGame.TakeGuess(guess);
+      var response = newGame.Check(validGuess);
+      newGame.GuessCount++;
+          }
+  
+  
+    }
   }
 }
