@@ -55,7 +55,19 @@ namespace MasterMind.Tests
 
       Assert.NotEqual(codeOne, codeTwo);
     }
+[Fact]
+public void ShouldProduceErrorIfInvalidColourInGuess()
+{
+  var guessInput = "purple, orange, pink, purple";
+  var game = new Game();
+  var result = game.TakeGuess(guessInput);
+  var expected = "error! You have given a invalid colour";
 
+  Assert.Equal(expected, result);
+
+
+
+}
   //       [Fact]
   //   public void ShouldReturnShuffledResponseArray()
   //   {

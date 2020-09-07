@@ -5,15 +5,19 @@ namespace MasterMind
 {
   public class Game
   {
-    //put set so in testing I can put Code as a particular code to check answers, seems bad to modify my code in this way just so I can test it. ask/ fix this later
+
     public Colours[] Code { get; set; }
 
-    public Game() : this(Game.FixedCodeFactory)
+    public IUserInput UserInput { get; set; }
+    
+
+    public Game() : this(Game.RandomCodeFactory, new ConsoleUserInput())
     { }
 
-    public Game(System.Func<Colours[]> codeFactory)
+    public Game(System.Func<Colours[]> codeFactory, IUserInput userInput)
     {
       Code = codeFactory();
+      UserInput = userInput;
     }
 
     public static Colours[] FixedCodeFactory()
@@ -33,6 +37,11 @@ namespace MasterMind
       }
       return code;
     }
+
+  public Colours[] TakeGuess(string guess)
+  {
+    
+  }
 
 
     public ResponseColours[] Check(Colours[] guess)
