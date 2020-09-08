@@ -41,6 +41,18 @@ namespace MasterMind
       return code;
     }
 
+
+    public bool CheckGuessLength(Colours[] guess)
+    {
+      if (guess.Length != 4)
+      {
+      Console.WriteLine("You must enter four colours per guess");
+      return false;
+      }
+      return true;
+
+    }
+
     public Colours[] TakeGuess(string guess)
     {
       // var consoleUserInput = new ConsoleUserInput();
@@ -49,27 +61,22 @@ namespace MasterMind
 
     }
 
-
-
-
-    //out params. 
-
     public bool TryParseGuess(string guess, out Colours[] validGuess)
     {
       validGuess = null;
+
       var guessArr = guess.Split(", ");
-      if (guessArr.Length > 4 || guessArr.Length < 4)
+      if (guessArr.Length != 4)
       {
         return false;
       }
+
       var parsedColours = new Colours[4];
       for (int i = 0; i < guessArr.Length; i++)
       {
         if (Enum.TryParse(guessArr[i], out Colours colour))
         {
           parsedColours[i] = colour;
-          validGuess = parsedColours;
-          return true;
         }
         else
         {
@@ -77,8 +84,9 @@ namespace MasterMind
         }
 
       }
-      return false;
-
+    
+      validGuess = parsedColours;
+      return true;
     }
 
 
@@ -102,7 +110,4 @@ namespace MasterMind
     }
   }
 }
-// guess: red, red, red, red
-
-// code: blue, green, red, blue
 
