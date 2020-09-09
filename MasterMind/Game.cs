@@ -126,24 +126,24 @@ namespace MasterMind
     public ResponseColours[] Check(Colours[] guess)
     {
       var responseColours = new List<ResponseColours>();
-      
       for (int i = 0; i < Code.Length; i++)
       {
-        if (Code.Contains(guess[i]))
-        {
+        var checkListCode = Code;
 
           if (guess[i].Equals(Code[i]))
           {
             responseColours.Add(ResponseColours.Black);
+            checkListCode[i] = Colours.Tick;
 
           }
-          else
+          else if (Code.Contains(guess[i]))
+        
           {
             responseColours.Add(ResponseColours.White);
 
           }
 
-        }
+        
 
       }
       return responseColours.ToArray();
