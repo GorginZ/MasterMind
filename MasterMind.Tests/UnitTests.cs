@@ -60,19 +60,50 @@ public void ShouldProduceErrorIfInvalidColourInGuess()
 {
   var guessInput = "purple, orange, pink, purple";
   var game = new Game();
-  var result = game.TakeGuess(guessInput);
-  var expected = "error! You have given a invalid colour";
 
-  Assert.Equal(expected, result);
+
+  var expected = "please enter a guess of four valid colours";
+
+  Assert.Equal(expected, game.ResponseToPlayer(guessInput));
 
 
 
 }
-  //       [Fact]
-  //   public void ShouldReturnShuffledResponseArray()
-  //   {
-  // // clue array of white and black should be in no particular order
-  //   }
+        [Fact]
+    public void ShouldReturnShuffledResponseArray()
+    {
+  // clue array of white and black should be in no particular order
+   //Red Blue Green Yellow
+      var guess = new[] { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
+      var newGame = new Game(Game.FixedCodeFactory);
+      // newGame.Code = code;
+      var actualResponse = newGame.Check(guess);
+
+      var expectedResponse = new[] { ResponseColours.White, ResponseColours.Black, ResponseColours.Black };
+      Assert.NotEqual(expectedResponse, actualResponse);
+    }
+
+    [Fact]
+    public void EachColourInCodeShouldOnlyBeCheckedOnce()
+    {
+            var guess = new[] { Colours.Red, Colours.Red, Colours.Red, Colours.Red };
+      var newGame = new Game(Game.FixedCodeFactory);
+      // newGame.Code = code;
+      var actualResponse = newGame.Check(guess);
+
+      var expectedResponse = new[] { ResponseColours.Black };
+      Assert.Equal(expectedResponse, actualResponse);
+    }
+
+    [Fact]
+    public void CanParseGuess()
+    {
+      var guess = "Blue, Purple, Green, Yellow";
+      var newGame = new Game(Game.FixedCodeFactory);
+      newGame.TryParseGuess(guess, out var validGuess);
+      var expectedValidGuess = new[] {Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow};
+      Assert.Equal(expectedValidGuess, validGuess);
+    }
   }
 
   
