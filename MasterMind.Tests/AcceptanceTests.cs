@@ -27,8 +27,7 @@ namespace MasterMind.Tests
         {
         var guess = new []{Colours.Red, Colours.Orange, Colours.Yellow, Colours.Orange};
         var newGame = new Game(Game.FixedCodeFactory);
-        var whiteClue = newGame.PopulateCluesWithWhite(guess);
-        var actualResponse = newGame.ReplaceAnyWhiteWithBlackWhereNecessary(guess, whiteClue);
+        var actualResponse = newGame.CheckAndReturnClueArray(guess);
         var expectedResponse = new []{ResponseColours.Black, ResponseColours.White};
         Assert.Equal(expectedResponse, actualResponse);
         }

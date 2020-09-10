@@ -74,14 +74,12 @@ namespace MasterMind
         {
           return false;
         }
-
       }
-
       validGuess = parsedColours;
       return true;
     }
 
-    public List<ResponseColours> PopulateCluesWithWhite(Colours[] guess)
+    public ResponseColours[] CheckAndReturnClueArray(Colours[] guess)
     {
       var intersectCodeColours = Code.Intersect(guess);
       var responseColours = new List<ResponseColours>();
@@ -89,11 +87,6 @@ namespace MasterMind
       {
         responseColours.Add(ResponseColours.White);
       }
-      return responseColours;
-    }
-
-    public ResponseColours[] ReplaceAnyWhiteWithBlackWhereNecessary(Colours[] guess, List<ResponseColours> responseColours)
-    {
       for (int i = 0; i < Code.Length; i++)
       {
         if (guess[i] == Code[i])
@@ -112,8 +105,7 @@ namespace MasterMind
         return "please enter a guess of four valid colours";
 
       }
-      var whiteClue = PopulateCluesWithWhite(validGuess);
-      var responseArray = ReplaceAnyWhiteWithBlackWhereNecessary(validGuess, whiteClue);
+      var responseArray = CheckAndReturnClueArray(validGuess);
       return String.Join(", ", responseArray);
     }
   }

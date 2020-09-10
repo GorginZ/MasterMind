@@ -11,8 +11,7 @@ namespace MasterMind.Tests
     {
       var guess = new[] { Colours.Red, Colours.Blue, Colours.Green, Colours.Yellow };
       var newGame = new Game(Game.FixedCodeFactory);
-      var whiteClue = newGame.PopulateCluesWithWhite(guess);
-      var actualResponse = newGame.ReplaceAnyWhiteWithBlackWhereNecessary(guess, whiteClue);
+      var actualResponse = newGame.CheckAndReturnClueArray(guess);
       var expectedResponse = new[] { ResponseColours.Black, ResponseColours.Black, ResponseColours.Black, ResponseColours.Black };
       Assert.Equal(expectedResponse, actualResponse);
     }
@@ -21,8 +20,7 @@ namespace MasterMind.Tests
     {
       var guess = new[] { Colours.Blue, Colours.Purple, Colours.Purple, Colours.Purple };
       var newGame = new Game(Game.FixedCodeFactory);
-      var whiteClue = newGame.PopulateCluesWithWhite(guess);
-      var actualResponse = newGame.ReplaceAnyWhiteWithBlackWhereNecessary(guess, whiteClue);
+      var actualResponse = newGame.CheckAndReturnClueArray(guess);
       var expectedResponse = new[] { ResponseColours.White };
       Assert.Equal(expectedResponse, actualResponse);
     }
@@ -34,9 +32,7 @@ namespace MasterMind.Tests
       var guess = new[] { Colours.Purple, Colours.Purple, Colours.Green, Colours.Purple };
       var newGame = new Game();
       newGame.Code = code;
-      var whiteClue = newGame.PopulateCluesWithWhite(guess);
-      var actualResponse = newGame.ReplaceAnyWhiteWithBlackWhereNecessary(guess, whiteClue);
-
+      var actualResponse = newGame.CheckAndReturnClueArray(guess);
       var expectedResponse = new[] { ResponseColours.Black };
       Assert.Equal(expectedResponse, actualResponse);
     }
@@ -65,27 +61,26 @@ namespace MasterMind.Tests
 
 
     }
-    // [Fact]
-    // public void ShouldReturnShuffledResponseArray()
-    // {
-    //   // clue array of white and black should be in no particular order
-    //   //Red Blue Green Yellow
-    //   var guess = new[] { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
-    //   var newGame = new Game(Game.FixedCodeFactory);
-    //   // newGame.Code = code;
-    //   var actualResponse = newGame.ReplaceAnyWhiteWithBlackWhereNecessary(guess);
+    [Fact]
+    public void ShouldReturnShuffledResponseArray()
+    {
+      // clue array of white and black should be in no particular order
+      //Red Blue Green Yellow
+      var guess = new[] { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
+      var newGame = new Game(Game.FixedCodeFactory);
+      // newGame.Code = code;
+      var actualResponse = newGame.CheckAndReturnClueArray(guess);
 
-    //   var expectedResponse = new[] { ResponseColours.White, ResponseColours.Black, ResponseColours.Black };
-    //   Assert.NotEqual(expectedResponse, actualResponse);
-    // }
+      var expectedResponse = new[] { ResponseColours.White, ResponseColours.Black, ResponseColours.Black };
+      Assert.NotEqual(expectedResponse, actualResponse);
+    }
 
     [Fact]
     public void EachColourInCodeShouldOnlyBeCheckedOnce()
     {
       var guess = new[] { Colours.Red, Colours.Red, Colours.Red, Colours.Red };
       var newGame = new Game(Game.FixedCodeFactory);
-      var whiteClue = newGame.PopulateCluesWithWhite(guess);
-      var actualResponse = newGame.ReplaceAnyWhiteWithBlackWhereNecessary(guess, whiteClue);
+      var actualResponse = newGame.CheckAndReturnClueArray(guess);
       var expectedResponse = new[] { ResponseColours.Black };
       Assert.Equal(expectedResponse, actualResponse);
     }
