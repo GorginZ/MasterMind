@@ -53,14 +53,6 @@ namespace MasterMind
 
     }
 
-    // public Colours[] TakeGuess(string guess)
-    // {
-    //   // var consoleUserInput = new ConsoleUserInput();
-    //   var isValidGuess = TryParseGuess(guess, out Colours[] validGuess);
-    //   return validGuess;
-
-    // }
-
     public bool TryParseGuess(string guess, out Colours[] validGuess)
     {
       validGuess = null;
@@ -89,89 +81,29 @@ namespace MasterMind
       return true;
     }
 
-    public bool WillThisColourReturnAnyBlacks(Colours colour, int position)
+    public List<ResponseColours> PopulateCluesWithWhite(Colours[] guess)
     {
-      for (int i = 0; i < Code.Length; i++)
-      {
-        if (colour == Code[i] && i != position)
-        {
-
-          return true;
-        }
-
-      }
-      return false;
-    }
-    // public ResponseColours[] Check(Colours[] guess)
-    // {
-    //   var responseColours = new List<ResponseColours>();
-    //   for (int i = 0; i < Code.Length; i++)
-    //   {
-    //     if (guess[i].Equals(Code[i]))
-    //     {
-    //       responseColours.Add(ResponseColours.Black);
-
-    //     }
-
-    //     else if (Code.Contains(guess[i]) && !WillThisColourReturnAnyBlacks(guess[i], i))
-
-    //     {
-    //       responseColours.Add(ResponseColours.White);
-
-    //     }
-    //   }
-    //   return responseColours.ToArray();
-    // }
-
-    public ResponseColours[] Check(Colours[] guess)
-    {
+      var intersectCodeColours = Code.Intersect(guess);
       var responseColours = new List<ResponseColours>();
+      foreach (Colours element in intersectCodeColours)
+      {
+        responseColours.Add(ResponseColours.White);
+      }
+      return responseColours;
+    }
+
+    public ResponseColours[] ReplaceAnyWhiteWithBlackWhereNecessary(Colours[] guess, List<ResponseColours> responseColours)
+    {
       for (int i = 0; i < Code.Length; i++)
       {
-        var checkListCode = Code;
-
-          if (guess[i].Equals(Code[i]))
-          {
-            responseColours.Add(ResponseColours.Black);
-            checkListCode[i] = Colours.Tick;
-
-          }
-          else if (Code.Contains(guess[i]))
-        
-          {
-            responseColours.Add(ResponseColours.White);
-
-          }
-
-        
-
+        if (guess[i] == Code[i])
+        {
+          responseColours.Remove(ResponseColours.White);
+          responseColours.Add(ResponseColours.Black);
+        }
       }
       return responseColours.ToArray();
-
     }
-    // public ResponseColours[] Check(Colours[] guess)
-    // {
-    //   var responseColours = new List<ResponseColours>();
-
-    //   var CodeIntersectGuess = Code.Intersect(guess);
-
-
-    //     for (int i = 0; i < Code.Length; i++)
-    //     {
-    //       if (guess[i].Equals(Code[i]))
-    //       {
-    //         responseColours.Add(ResponseColours.Black);
-
-    //       }
-    //       else
-    //       {
-    //         responseColours.Add(ResponseColours.White);
-    //       }
-    //     }
-
-
-    //   return responseColours.ToArray();
-    // }
 
     public string ResponseToPlayer(string guess)
     {
@@ -180,31 +112,10 @@ namespace MasterMind
         return "please enter a guess of four valid colours";
 
       }
-      var responseArray = Check(validGuess);
+      var whiteClue = PopulateCluesWithWhite(validGuess);
+      var responseArray = ReplaceAnyWhiteWithBlackWhereNecessary(validGuess, whiteClue);
       return String.Join(", ", responseArray);
     }
-
-    // public static ResponseColours[] RandomResponseArray(ResponseColours[] responseColours)
-    // {
-    //   var rng = new System.Random();
-    //   int minValue = 0;
-    //   int maxValue = responseColours.Length;
-
-    //   var shuffledResponseColours = new ResponseColours[responseColours.Length];
-
-    //   for (var i = 0; i < responseColours.Length; ++i)
-    //   {
-    //     shuffledResponseColours[i] = (ResponseColours)rng.Next(minValue, maxValue + 1);
-
-
-    //   }
-    //   return shuffledResponseColours;
-    // }
-
-
-
-
-
   }
 }
 
