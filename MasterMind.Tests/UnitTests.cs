@@ -9,7 +9,7 @@ namespace MasterMind.Tests
   public class UnitTests
   {
 
-    static int CountOccurenceOfResponseColour(List<ResponseColours> actualResponse, ResponseColours responseColourToFind)
+    public static int CountOccurenceOfResponseColour(List<ResponseColours> actualResponse, ResponseColours responseColourToFind)
     {
       return ((from responseColours in actualResponse where responseColours.Equals(responseColourToFind) select responseColours).Count());
     }

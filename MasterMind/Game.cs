@@ -156,24 +156,20 @@ namespace MasterMind
     //   return responseColours.ToArray();
     // }
 
-  public List<ResponseColours> CheckAndReturnClueArray(List<Colours> guess)
+    public List<ResponseColours> CheckAndReturnClueArray(List<Colours> guess)
     {
       var cList = Code.ToList();
       var responseColours = new List<ResponseColours>();
       for (int i = 0; i < Code.Length; i++)
       {
-        //index of only looks at first occurance?
         if (cList[i] == guess[i])
         {
           responseColours.Add(ResponseColours.Black);
-          Console.WriteLine($"{guess[i]} is correct and in the right place");
-          cList[i] = Colours.Tick;
           continue;
         }
         if (guess.Contains(cList[i]))
         {
           responseColours.Add(ResponseColours.White);
-          Console.WriteLine($"your guess contains {cList[i]} (and so does code) but inw rong place");
         }
       }
       return responseColours;
