@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using MasterMind;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MasterMind.Tests
 {
@@ -67,7 +68,7 @@ namespace MasterMind.Tests
     {
       // clue array of white and black should be in no particular order
       //Red Blue Green Yellow
-      var guess = new List<Colours>  { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
+      var guess = new List<Colours> { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
       var newGame = new Game(Game.FixedCodeFactory);
       // newGame.Code = code;
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
@@ -79,7 +80,7 @@ namespace MasterMind.Tests
     [Fact]
     public void EachColourInCodeShouldOnlyBeCheckedOnce()
     {
-      var guess = new List<Colours>  { Colours.Red, Colours.Red, Colours.Red, Colours.Red };
+      var guess = new List<Colours> { Colours.Red, Colours.Red, Colours.Red, Colours.Red };
       var newGame = new Game(Game.FixedCodeFactory);
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
       var expectedResponse = new[] { ResponseColours.Black };
@@ -96,16 +97,38 @@ namespace MasterMind.Tests
       Assert.Equal(expectedResponse, actualResponse);
     }
 
-[Fact]
+    [Fact]
     public void CanHandleDuplicatesInCodeAndGuess()
     {
-                  // factory is: { Colours.Red, Colours.Green, Colours.Red, Colours.Purple };
-  var guess = new List<Colours> { Colours.Purple, Colours.Red, Colours.Red, Colours.Yellow };
+      // factory is: { Colours.Red, Colours.Green, Colours.Red, Colours.Purple };
+      var guess = new List<Colours> { Colours.Purple, Colours.Red, Colours.Red, Colours.Yellow };
       var newGame = new Game(Game.DuplicateFixedCodeFactory);
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
-      var expectedResponse = new[] { ResponseColours.White, ResponseColours.White, ResponseColours.Black };
-      Assert.Equal(expectedResponse, actualResponse);
+      var expectedResponse = new List<ResponseColours> { ResponseColours.White, ResponseColours.Black, ResponseColours.White };
+
+      var actualWhiteCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.White);
+      var actualBlackCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.Black);
+
+      var expectedWhiteCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.White);
+      var expectedBlackCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.Black);
+      Assert.Equal(expectedWhiteCount, actualWhiteCount);
+      Assert.Equal(expectedBlackCount, actualBlackCount);
     }
+
+    static int CountOccurenceOfResponseColour(List<ResponseColours> actualResponse, ResponseColours responseColourToFind)
+    {
+      return ((from responseColours in actualResponse where responseColours.Equals(responseColourToFind) select responseColours).Count());
+    }
+
+    // static int CountOccurenceOfValue2(List<int> list, int valueToFind)
+    // {
+    //     int count = list.Where(temp => temp.Equals(valueToFind))
+    //                 .Select(temp => temp)
+    //                 .Count();
+    //     return count;
+    // }
+
+
 
     [Fact]
     public void CanParseGuess()
