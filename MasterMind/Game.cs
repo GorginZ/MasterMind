@@ -132,24 +132,22 @@ namespace MasterMind
 
     public ResponseColours[] CheckAndReturnClueArray(Colours[] guess)
     {
-      var responseColours = new List<ResponseColours>();
+      var gList = guess.ToList();
+      var cList = Code.ToList();
 
-      foreach (Colours c in Code)
-      {
-        foreach (Colours g in guess)
+      var responseColours = new List<ResponseColours>();
+        foreach (Colours element in cList)
         {
-          if (c == g)
+          if (cList.IndexOf(element) == gList.IndexOf(element))
+          {
+            responseColours.Add(ResponseColours.Black);
+            continue;
+          }
+          if (gList.Contains(element))
           {
             responseColours.Add(ResponseColours.White);
-
           }
-          if (c == g)
-        {
-          responseColours.Add(ResponseColours.Black);
         }
-        }
-        
-      }
       return responseColours.ToArray();
 
     }
