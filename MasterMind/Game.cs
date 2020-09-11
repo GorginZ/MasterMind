@@ -30,6 +30,13 @@ namespace MasterMind
       return code;
     }
 
+    public static Colours[] FiftyFiftyFixedCodeFactory()
+    {
+      var code = new[] { Colours.Yellow, Colours.Yellow, Colours.Red, Colours.Red };
+
+      return code;
+    }
+
     public static Colours[] RandomCodeFactory()
     {
       var rng = new System.Random();
@@ -79,23 +86,72 @@ namespace MasterMind
       return true;
     }
 
+    // public ResponseColours[] CheckAndReturnClueArray(Colours[] guess)
+    // {
+    //   var intersectCodeColours = Code.Intersect(guess);
+    //   var responseColours = new List<ResponseColours>();
+    //   foreach (Colours element in intersectCodeColours)
+    //   {
+    //     responseColours.Add(ResponseColours.White);
+    //   }
+    //   for (int i = 0; i < Code.Length; i++)
+    //   {
+    //     if (guess[i] == Code[i])
+    //     {
+    //       responseColours.Remove(ResponseColours.White);
+    //       responseColours.Add(ResponseColours.Black);
+    //     }
+    //   }
+    //   return responseColours.ToArray();
+    // }
+
+    // public ResponseColours[] CheckAndReturnClueArray(Colours[] guess)
+    // {
+    //   var responseColours = new List<ResponseColours>();
+
+    //   for (int i = 0; i < Code.Length; i++)
+    //   {
+
+    //     for (int j = 0; j < Code.Length; j++)
+    //     {
+    //        if (guess[i] == Code[i] && responseColours.Count < 4)
+    //     {
+    //       responseColours.Add(ResponseColours.Black);
+    //       continue;
+    //     }
+
+    //       else if (guess[i] == Code[j] && responseColours.Count < 4)
+    //       {
+    //         responseColours.Add(ResponseColours.White);
+    //       }
+    //     }
+    //   }
+    //   return responseColours.ToArray();
+
+    // }
+
     public ResponseColours[] CheckAndReturnClueArray(Colours[] guess)
     {
-      var intersectCodeColours = Code.Intersect(guess);
       var responseColours = new List<ResponseColours>();
-      foreach (Colours element in intersectCodeColours)
+
+      foreach (Colours c in Code)
       {
-        responseColours.Add(ResponseColours.White);
-      }
-      for (int i = 0; i < Code.Length; i++)
-      {
-        if (guess[i] == Code[i])
+        foreach (Colours g in guess)
         {
-          responseColours.Remove(ResponseColours.White);
+          if (c == g)
+          {
+            responseColours.Add(ResponseColours.White);
+
+          }
+          if (c == g)
+        {
           responseColours.Add(ResponseColours.Black);
         }
+        }
+        
       }
       return responseColours.ToArray();
+
     }
 
     public string ResponseToPlayer(string guess)

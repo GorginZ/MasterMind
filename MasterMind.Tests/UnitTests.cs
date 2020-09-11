@@ -86,6 +86,16 @@ namespace MasterMind.Tests
     }
 
     [Fact]
+    public void CanHandleFiftyFiftySplitGuess()
+    {
+      var guess = new[] { Colours.Red, Colours.Red, Colours.Yellow, Colours.Yellow };
+      var newGame = new Game(Game.FiftyFiftyFixedCodeFactory);
+      var actualResponse = newGame.CheckAndReturnClueArray(guess);
+      var expectedResponse = new[] { ResponseColours.White, ResponseColours.White, ResponseColours.White, ResponseColours.White };
+      Assert.Equal(expectedResponse, actualResponse);
+    }
+
+    [Fact]
     public void CanParseGuess()
     {
       var guess = "Blue, Purple, Green, Yellow";
