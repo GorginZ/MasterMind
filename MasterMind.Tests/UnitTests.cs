@@ -8,14 +8,25 @@ namespace MasterMind.Tests
 {
   public class UnitTests
   {
+
+    static int CountOccurenceOfResponseColour(List<ResponseColours> actualResponse, ResponseColours responseColourToFind)
+    {
+      return ((from responseColours in actualResponse where responseColours.Equals(responseColourToFind) select responseColours).Count());
+    }
     [Fact]
     public void ShouldWinWhenGuessAndCodeEqual()
     {
       var guess = new List<Colours> { Colours.Red, Colours.Blue, Colours.Green, Colours.Yellow };
       var newGame = new Game(Game.FixedCodeFactory);
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
-      var expectedResponse = new[] { ResponseColours.Black, ResponseColours.Black, ResponseColours.Black, ResponseColours.Black };
-      Assert.Equal(expectedResponse, actualResponse);
+      var expectedResponse = new List<ResponseColours> { ResponseColours.Black, ResponseColours.Black, ResponseColours.Black, ResponseColours.Black };
+
+      var actualWhiteCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.White);
+      var actualBlackCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.Black);
+      var expectedWhiteCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.White);
+      var expectedBlackCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.Black);
+      Assert.Equal(expectedWhiteCount, actualWhiteCount);
+      Assert.Equal(expectedBlackCount, actualBlackCount);
     }
     [Fact]
     public void ShouldReturnWhiteForGuessIncludingCorrectColourValue()
@@ -23,8 +34,15 @@ namespace MasterMind.Tests
       var guess = new List<Colours> { Colours.Blue, Colours.Purple, Colours.Purple, Colours.Purple };
       var newGame = new Game(Game.FixedCodeFactory);
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
-      var expectedResponse = new[] { ResponseColours.White };
-      Assert.Equal(expectedResponse, actualResponse);
+      var expectedResponse = new List<ResponseColours> { ResponseColours.White };
+
+      var actualWhiteCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.White);
+      var actualBlackCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.Black);
+
+      var expectedWhiteCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.White);
+      var expectedBlackCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.Black);
+      Assert.Equal(expectedWhiteCount, actualWhiteCount);
+      Assert.Equal(expectedBlackCount, actualBlackCount);
     }
 
     [Fact]
@@ -35,8 +53,15 @@ namespace MasterMind.Tests
       var newGame = new Game();
       newGame.Code = code;
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
-      var expectedResponse = new[] { ResponseColours.Black };
-      Assert.Equal(expectedResponse, actualResponse);
+      var expectedResponse = new List<ResponseColours> { ResponseColours.Black };
+
+      var actualWhiteCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.White);
+      var actualBlackCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.Black);
+
+      var expectedWhiteCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.White);
+      var expectedBlackCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.Black);
+      Assert.Equal(expectedWhiteCount, actualWhiteCount);
+      Assert.Equal(expectedBlackCount, actualBlackCount);
     }
 
 
@@ -73,7 +98,7 @@ namespace MasterMind.Tests
       // newGame.Code = code;
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
 
-      var expectedResponse = new[] { ResponseColours.White, ResponseColours.Black, ResponseColours.Black };
+      var expectedResponse = new List<ResponseColours> { ResponseColours.White, ResponseColours.Black, ResponseColours.Black };
       Assert.NotEqual(expectedResponse, actualResponse);
     }
 
@@ -83,8 +108,14 @@ namespace MasterMind.Tests
       var guess = new List<Colours> { Colours.Red, Colours.Red, Colours.Red, Colours.Red };
       var newGame = new Game(Game.FixedCodeFactory);
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
-      var expectedResponse = new[] { ResponseColours.Black };
-      Assert.Equal(expectedResponse, actualResponse);
+      var expectedResponse = new List<ResponseColours> { ResponseColours.Black };
+
+      var actualWhiteCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.White);
+      var actualBlackCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.Black);
+      var expectedWhiteCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.White);
+      var expectedBlackCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.Black);
+      Assert.Equal(expectedWhiteCount, actualWhiteCount);
+      Assert.Equal(expectedBlackCount, actualBlackCount);
     }
 
     [Fact]
@@ -93,8 +124,14 @@ namespace MasterMind.Tests
       var guess = new List<Colours> { Colours.Red, Colours.Red, Colours.Yellow, Colours.Yellow };
       var newGame = new Game(Game.FiftyFiftyFixedCodeFactory);
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
-      var expectedResponse = new[] { ResponseColours.White, ResponseColours.White, ResponseColours.White, ResponseColours.White };
-      Assert.Equal(expectedResponse, actualResponse);
+      var expectedResponse = new List<ResponseColours> { ResponseColours.White, ResponseColours.White, ResponseColours.White, ResponseColours.White };
+
+      var actualWhiteCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.White);
+      var actualBlackCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.Black);
+      var expectedWhiteCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.White);
+      var expectedBlackCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.Black);
+      Assert.Equal(expectedWhiteCount, actualWhiteCount);
+      Assert.Equal(expectedBlackCount, actualBlackCount);
     }
 
     [Fact]
@@ -108,27 +145,11 @@ namespace MasterMind.Tests
 
       var actualWhiteCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.White);
       var actualBlackCount = CountOccurenceOfResponseColour(actualResponse, ResponseColours.Black);
-
       var expectedWhiteCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.White);
       var expectedBlackCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.Black);
       Assert.Equal(expectedWhiteCount, actualWhiteCount);
       Assert.Equal(expectedBlackCount, actualBlackCount);
     }
-
-    static int CountOccurenceOfResponseColour(List<ResponseColours> actualResponse, ResponseColours responseColourToFind)
-    {
-      return ((from responseColours in actualResponse where responseColours.Equals(responseColourToFind) select responseColours).Count());
-    }
-
-    // static int CountOccurenceOfValue2(List<int> list, int valueToFind)
-    // {
-    //     int count = list.Where(temp => temp.Equals(valueToFind))
-    //                 .Select(temp => temp)
-    //                 .Count();
-    //     return count;
-    // }
-
-
 
     [Fact]
     public void CanParseGuess()
