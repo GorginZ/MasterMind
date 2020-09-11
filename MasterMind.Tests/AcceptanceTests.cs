@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using MasterMind;
+using System.Collections.Generic;
 
 namespace MasterMind.Tests
 {
@@ -25,7 +26,7 @@ namespace MasterMind.Tests
         [Fact]
         public void Acceptance()
         {
-        var guess = new []{Colours.Red, Colours.Orange, Colours.Yellow, Colours.Orange};
+        var guess = new List<Colours>  {Colours.Red, Colours.Orange, Colours.Yellow, Colours.Orange};
         var newGame = new Game(Game.FixedCodeFactory);
         var actualResponse = newGame.CheckAndReturnClueArray(guess);
         var expectedResponse = new []{ResponseColours.Black, ResponseColours.White};

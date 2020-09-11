@@ -37,6 +37,12 @@ namespace MasterMind
       return code;
     }
 
+    public static Colours[] DuplicateFixedCodeFactory()
+    {
+      var code = new[] { Colours.Red, Colours.Green, Colours.Red, Colours.Purple };
+      return code;
+    }
+
     public static Colours[] RandomCodeFactory()
     {
       var rng = new System.Random();
@@ -60,7 +66,7 @@ namespace MasterMind
 
     }
 
-    public bool TryParseGuess(string guess, out Colours[] validGuess)
+    public bool TryParseGuess(string guess, out List<Colours> validGuess)
     {
       validGuess = null;
 
@@ -70,12 +76,12 @@ namespace MasterMind
         return false;
       }
 
-      var parsedColours = new Colours[4];
+      var parsedColours = new List<Colours>();
       for (int i = 0; i < guessArr.Length; i++)
       {
         if (Enum.TryParse(guessArr[i], out Colours colour))
         {
-          parsedColours[i] = colour;
+          parsedColours.Add(colour);
         }
         else
         {
@@ -130,27 +136,47 @@ namespace MasterMind
 
     // }
 
-    public ResponseColours[] CheckAndReturnClueArray(Colours[] guess)
+    // public ResponseColours[] CheckAndReturnClueArray(List<Colours> guess)
+    // {
+    //   var cList = Code.ToList();
+    //   var responseColours = new List<ResponseColours>();
+    //   foreach (Colours element in cList)
+    //   {
+    //     //index of only looks at first occurance?
+    //     if (cList.IndexOf(element) == guess.IndexOf(element))
+    //     {
+    //       responseColours.Add(ResponseColours.Black);
+    //       continue;
+    //     }
+    //     if (guess.Contains(element))
+    //     {
+    //       responseColours.Add(ResponseColours.White);
+    //     }
+    //   }
+    //   return responseColours.ToArray();
+    // }
+
+  public ResponseColours[] CheckAndReturnClueArray(List<Colours> guess)
     {
-      var gList = guess.ToList();
       var cList = Code.ToList();
-
       var responseColours = new List<ResponseColours>();
-        foreach (Colours element in cList)
+      for (int i = 0; i < Code.Length; i++)
+      {
+        //index of only looks at first occurance?
+        if (cList[i] == guess[i])
         {
-          if (cList.IndexOf(element) == gList.IndexOf(element))
-          {
-            responseColours.Add(ResponseColours.Black);
-            continue;
-          }
-          if (gList.Contains(element))
-          {
-            responseColours.Add(ResponseColours.White);
-          }
+          responseColours.Add(ResponseColours.Black);
+          cList[i] = Colours.Tick;
+          continue;
         }
+        if (guess.Contains(cList[i]))
+        {
+          responseColours.Add(ResponseColours.White);
+        }
+      }
       return responseColours.ToArray();
-
     }
+
 
     public string ResponseToPlayer(string guess)
     {

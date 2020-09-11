@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using MasterMind;
+using System.Collections.Generic;
 
 namespace MasterMind.Tests
 {
@@ -9,7 +10,7 @@ namespace MasterMind.Tests
     [Fact]
     public void ShouldWinWhenGuessAndCodeEqual()
     {
-      var guess = new[] { Colours.Red, Colours.Blue, Colours.Green, Colours.Yellow };
+      var guess = new List<Colours> { Colours.Red, Colours.Blue, Colours.Green, Colours.Yellow };
       var newGame = new Game(Game.FixedCodeFactory);
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
       var expectedResponse = new[] { ResponseColours.Black, ResponseColours.Black, ResponseColours.Black, ResponseColours.Black };
@@ -18,7 +19,7 @@ namespace MasterMind.Tests
     [Fact]
     public void ShouldReturnWhiteForGuessIncludingCorrectColourValue()
     {
-      var guess = new[] { Colours.Blue, Colours.Purple, Colours.Purple, Colours.Purple };
+      var guess = new List<Colours> { Colours.Blue, Colours.Purple, Colours.Purple, Colours.Purple };
       var newGame = new Game(Game.FixedCodeFactory);
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
       var expectedResponse = new[] { ResponseColours.White };
@@ -29,7 +30,7 @@ namespace MasterMind.Tests
     public void ShouldReturnBlackForGuessIncludingCorrectColourValueAndPosition()
     {
       var code = new[] { Colours.Red, Colours.Blue, Colours.Green, Colours.Yellow };
-      var guess = new[] { Colours.Purple, Colours.Purple, Colours.Green, Colours.Purple };
+      var guess = new List<Colours> { Colours.Purple, Colours.Purple, Colours.Green, Colours.Purple };
       var newGame = new Game();
       newGame.Code = code;
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
@@ -66,7 +67,7 @@ namespace MasterMind.Tests
     {
       // clue array of white and black should be in no particular order
       //Red Blue Green Yellow
-      var guess = new[] { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
+      var guess = new List<Colours>  { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
       var newGame = new Game(Game.FixedCodeFactory);
       // newGame.Code = code;
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
@@ -78,7 +79,7 @@ namespace MasterMind.Tests
     [Fact]
     public void EachColourInCodeShouldOnlyBeCheckedOnce()
     {
-      var guess = new[] { Colours.Red, Colours.Red, Colours.Red, Colours.Red };
+      var guess = new List<Colours>  { Colours.Red, Colours.Red, Colours.Red, Colours.Red };
       var newGame = new Game(Game.FixedCodeFactory);
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
       var expectedResponse = new[] { ResponseColours.Black };
@@ -88,10 +89,21 @@ namespace MasterMind.Tests
     [Fact]
     public void CanHandleFiftyFiftySplitGuess()
     {
-      var guess = new[] { Colours.Red, Colours.Red, Colours.Yellow, Colours.Yellow };
+      var guess = new List<Colours> { Colours.Red, Colours.Red, Colours.Yellow, Colours.Yellow };
       var newGame = new Game(Game.FiftyFiftyFixedCodeFactory);
       var actualResponse = newGame.CheckAndReturnClueArray(guess);
       var expectedResponse = new[] { ResponseColours.White, ResponseColours.White, ResponseColours.White, ResponseColours.White };
+      Assert.Equal(expectedResponse, actualResponse);
+    }
+
+[Fact]
+    public void CanHandleDuplicatesInCodeAndGuess()
+    {
+                  // factory is: { Colours.Red, Colours.Green, Colours.Red, Colours.Purple };
+  var guess = new List<Colours> { Colours.Purple, Colours.Red, Colours.Red, Colours.Yellow };
+      var newGame = new Game(Game.DuplicateFixedCodeFactory);
+      var actualResponse = newGame.CheckAndReturnClueArray(guess);
+      var expectedResponse = new[] { ResponseColours.White, ResponseColours.White, ResponseColours.Black };
       Assert.Equal(expectedResponse, actualResponse);
     }
 
