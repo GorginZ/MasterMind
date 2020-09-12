@@ -9,12 +9,24 @@ namespace MasterMind.Tests
   public class UnitTests
   {
 
+        [Fact]
+    public void GameShouldHaveShuffledCode()
+    {
+      var gameOne = new Game();
+      var gameTwo = new Game();
+
+      var codeOne = gameOne.Code;
+      var codeTwo = gameTwo.Code;
+
+      Assert.NotEqual(codeOne, codeTwo);
+    }
+
     public static int CountOccurenceOfResponseColour(List<ResponseColours> actualResponse, ResponseColours responseColourToFind)
     {
       return ((from responseColours in actualResponse where responseColours.Equals(responseColourToFind) select responseColours).Count());
     }
     [Fact]
-    public void ShouldWinWhenGuessAndCodeEqual()
+    public void ResponseShouldBeAllBlackOnWin()
     {
       var guess = new List<Colours> { Colours.Red, Colours.Blue, Colours.Green, Colours.Yellow };
       var newGame = new Game(Game.FixedCodeFactory);
@@ -29,7 +41,7 @@ namespace MasterMind.Tests
       Assert.Equal(expectedBlackCount, actualBlackCount);
     }
     [Fact]
-    public void ShouldReturnWhiteForGuessIncludingCorrectColourValue()
+    public void ShouldReturnOneWhiteForGuessIncludingOneCorrectColourValue()
     {
       var guess = new List<Colours> { Colours.Blue, Colours.Purple, Colours.Purple, Colours.Purple };
       var newGame = new Game(Game.FixedCodeFactory);
@@ -46,7 +58,7 @@ namespace MasterMind.Tests
     }
 
     [Fact]
-    public void ShouldReturnBlackForGuessIncludingCorrectColourValueAndPosition()
+    public void ShouldReturnOneBlackForGuessIncludingOneCorrectColourValueAndPosition()
     {
       var code = new[] { Colours.Red, Colours.Blue, Colours.Green, Colours.Yellow };
       var guess = new List<Colours> { Colours.Purple, Colours.Purple, Colours.Green, Colours.Purple };
@@ -65,17 +77,7 @@ namespace MasterMind.Tests
     }
 
 
-    [Fact]
-    public void ShouldProduceShuffledCode()
-    {
-      var gameOne = new Game();
-      var gameTwo = new Game();
 
-      var codeOne = gameOne.Code;
-      var codeTwo = gameTwo.Code;
-
-      Assert.NotEqual(codeOne, codeTwo);
-    }
     [Fact]
     public void ShouldProduceErrorIfInvalidColourInGuess()
     {
@@ -84,23 +86,8 @@ namespace MasterMind.Tests
       var expected = "please enter a guess of four valid colours";
 
       Assert.Equal(expected, game.ResponseToPlayer(guessInput));
-
-
-
     }
-    [Fact]
-    public void ShouldReturnShuffledResponseArray()
-    {
-      // clue array of white and black should be in no particular order
-      //Red Blue Green Yellow
-      var guess = new List<Colours> { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
-      var newGame = new Game(Game.FixedCodeFactory);
-      // newGame.Code = code;
-      var actualResponse = newGame.CheckAndReturnClueArray(guess);
 
-      var expectedResponse = new List<ResponseColours> { ResponseColours.White, ResponseColours.Black, ResponseColours.Black };
-      Assert.NotEqual(expectedResponse, actualResponse);
-    }
 
     [Fact]
     public void EachColourInCodeShouldOnlyBeCheckedOnce()
@@ -159,6 +146,22 @@ namespace MasterMind.Tests
       newGame.TryParseGuess(guess, out var validGuess);
       var expectedValidGuess = new[] { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
       Assert.Equal(expectedValidGuess, validGuess);
+    }
+
+        [Fact]
+    public void ShouldReturnShuffledResponseArrayOfClues()
+    {
+    
+      var gameOne = new Game(Game.FixedCodeFactory);
+      var gameTwo = new Game(Game.FixedCodeFactory);
+
+      var guessOne = new List<Colours> { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
+      var guessTwo = new List<Colours> { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
+
+      var responseOne = gameOne.CheckAndReturnClueArray(guessOne);
+      var responseTwo = gameTwo.CheckAndReturnClueArray(guessTwo);
+
+      Assert.NotEqual(responseOne, responseTwo);
     }
   }
 
