@@ -172,7 +172,16 @@ namespace MasterMind
           responseColours.Add(ResponseColours.White);
         }
       }
-      return responseColours;
+      var shuffledClue = ShuffleClue(responseColours);
+      return shuffledClue;
+    }
+
+     public static List<ResponseColours> ShuffleClue(List<ResponseColours> responseColours)
+    {
+      var rnd = new System.Random();
+      var shuffledResponse = responseColours.OrderBy(item => rnd.Next());
+
+      return shuffledResponse.ToList();
     }
 
 

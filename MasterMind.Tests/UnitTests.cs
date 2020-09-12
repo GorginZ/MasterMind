@@ -20,6 +20,25 @@ namespace MasterMind.Tests
 
       Assert.NotEqual(codeOne, codeTwo);
     }
+     [Fact]
+    public void CanParseGuess()
+    {
+      var guess = "Blue, Purple, Green, Yellow";
+      var newGame = new Game(Game.FixedCodeFactory);
+      newGame.TryParseGuess(guess, out var validGuess);
+      var expectedValidGuess = new[] { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
+      Assert.Equal(expectedValidGuess, validGuess);
+    }
+        [Fact]
+    public void ShouldProduceErrorIfInvalidColourInGuess()
+    {
+      var guessInput = "purple, orange, pink, purple";
+      var game = new Game();
+      var expected = "please enter a guess of four valid colours";
+
+      Assert.Equal(expected, game.ResponseToPlayer(guessInput));
+    }
+
 
     public static int CountOccurenceOfResponseColour(List<ResponseColours> actualResponse, ResponseColours responseColourToFind)
     {
@@ -76,19 +95,6 @@ namespace MasterMind.Tests
       Assert.Equal(expectedBlackCount, actualBlackCount);
     }
 
-
-
-    [Fact]
-    public void ShouldProduceErrorIfInvalidColourInGuess()
-    {
-      var guessInput = "purple, orange, pink, purple";
-      var game = new Game();
-      var expected = "please enter a guess of four valid colours";
-
-      Assert.Equal(expected, game.ResponseToPlayer(guessInput));
-    }
-
-
     [Fact]
     public void EachColourInCodeShouldOnlyBeCheckedOnce()
     {
@@ -136,16 +142,6 @@ namespace MasterMind.Tests
       var expectedBlackCount = CountOccurenceOfResponseColour(expectedResponse, ResponseColours.Black);
       Assert.Equal(expectedWhiteCount, actualWhiteCount);
       Assert.Equal(expectedBlackCount, actualBlackCount);
-    }
-
-    [Fact]
-    public void CanParseGuess()
-    {
-      var guess = "Blue, Purple, Green, Yellow";
-      var newGame = new Game(Game.FixedCodeFactory);
-      newGame.TryParseGuess(guess, out var validGuess);
-      var expectedValidGuess = new[] { Colours.Blue, Colours.Purple, Colours.Green, Colours.Yellow };
-      Assert.Equal(expectedValidGuess, validGuess);
     }
 
         [Fact]
